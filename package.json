@@ -1,0 +1,24 @@
+{
+  "name": "content-validation",
+  "version": "1.0.0",
+  "description": "list of content validation scripts",
+  "main": "mdOBS.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/texttree/content-validation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/texttree/content-validation/issues"
+  },
+  "homepage": "https://github.com/texttree/content-validation#readme",
+  "devDependencies": {
+    "eslint": "^8.30.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  }
+}
