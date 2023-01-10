@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const mainDiv = 'test/';
+const mainDiv = 'az_obs_text_obs/';
 
 fs.readdir(mainDiv, (err, _chapters) => {
   const errors = [];
@@ -17,7 +17,7 @@ fs.readdir(mainDiv, (err, _chapters) => {
         const missingQuote = fileContent.match(/\"/g);
 
         if ((missingQuote?.length ?? 0) % 2) {
-          const er = 'Нечетное число кавычек в ';
+          const er = (`Нечетное число кавычек в ${chapter}:${verse.split('.')[0]}`);
           errors.push(er);
         }
         if (doubleSpace) {
