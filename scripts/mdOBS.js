@@ -2,17 +2,18 @@ const fs = require('fs');
 
 const thePathFile = 'test/';
 // корневая папка содержащая в себе файлы md
-fs.readdir(thePathFile, (err, main) => {
+fs.readdir(thePathFile, (error, main) => {
   const errors = [];
   const exceptions = ['LICENSE.md', 'manifest.yaml'];
   main = main.filter((item) => !exceptions.includes(item));
 
   main.forEach((chapter) => {
     const fileContent = fs.readFileSync(thePathFile + chapter, 'utf8');
+    let verses = '';
     if (fileContent.includes('OBS Image')) {
-      const verses = fileContent.split('![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-');
+      verses = fileContent.split('![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-');
     } else {
-      const verses = fileContent.split('![Frame ');
+      verses = fileContent.split('![Frame ');
     }
     const missingQuote = fileContent.match(/\"/g);
     if ((missingQuote?.length ?? 0) % 2) {

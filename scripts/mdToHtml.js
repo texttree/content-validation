@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const fs = require('fs');
 
 const thePathFile = 'uz_obs_old/';
@@ -20,7 +21,7 @@ fs.readdir(thePathFile, (err, files) => {
 
     fs.writeFile(`new/${newNameFile}.html`, c, (err) => {
       if (err) throw err; // не удалось переименовать файл
-      console.log('Файл успешно переименован');
+      console.log('Файл успешно создан');
     });
   });
 });
