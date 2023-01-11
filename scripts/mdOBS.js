@@ -2,10 +2,10 @@ const fs = require('fs');
 
 const thePathFile = 'test/';
 // корневая папка содержащая в себе файлы md
-fs.readdir(thePathFile, (error, main) => {
+fs.readdir(thePathFile, (error, _main) => {
   const errors = [];
   const exceptions = ['LICENSE.md', 'manifest.yaml'];
-  main = main.filter((item) => !exceptions.includes(item));
+  const main = _main.filter((item) => !exceptions.includes(item));
 
   main.forEach((chapter) => {
     const fileContent = fs.readFileSync(thePathFile + chapter, 'utf8');

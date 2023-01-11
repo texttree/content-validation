@@ -1,8 +1,7 @@
-/* eslint-disable no-shadow */
 const fs = require('fs');
 
 const thePathFile = 'uz_obs_old/';
-fs.readdir(thePathFile, (err, files) => {
+fs.readdir(thePathFile, (error, files) => {
   files.forEach((fileName) => {
     const fileContent = fs.readFileSync(thePathFile + fileName, 'utf8');
     let newNameFile = fileContent.split('\n')[0].split('# ')[1];
