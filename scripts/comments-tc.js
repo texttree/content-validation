@@ -7,7 +7,7 @@ const commentFile = `${project}_${book}_commets.tsv`
 
 function searchComments(corPath, commentFile) {
   const comments = [
-    'bookId	chapter	verse	tool	text	userName	activeBook	activeChapter	activeVerse	username	modifiedTimestamp\n',
+    'bookId	chapter	verse	tool	groupId	text	userName	activeBook	activeChapter	activeVerse	username	modifiedTimestamp\n',
   ]
   fs.readdirSync(corPath).forEach((chapter) => {
     fs.readdirSync(`${corPath}/${chapter}`).forEach((verse) => {
@@ -21,26 +21,33 @@ function searchComments(corPath, commentFile) {
         }))
         .sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
       if (correctСomment.length > 0) {
-        const latestCommentPath = path.join(verseDir, correctСomment[0].name)
-        const contents = fs.readFileSync(latestCommentPath, 'utf8')
-        const data = JSON.parse(contents)
-        data.text = data.text.replaceAll('\n', ' br ')
-        data.text = data.text.replaceAll('"', '“')
-        data.text = data.text.replaceAll('\t"', '')
-        data.text = data.text.replaceAll(' 	', '')
-        data.text = data.text.replaceAll('\\', '')
-        const {
-          text,
-          userName,
-          activeBook,
-          activeChapter,
-          activeVerse,
-          username,
-          modifiedTimestamp,
-        } = data
-        const ref = data.contextId.reference
-        const output = `${ref.bookId}	${ref.chapter}	${ref.verse}	${data.contextId.tool}	${text}	${userName}	${activeBook}	${activeChapter}	${activeVerse}	${username}	${modifiedTimestamp}	\n`
-        comments.push(output)
+        const tools = []
+        correctСomment.forEach(({ name }) => {
+          const latestCommentPath = path.join(verseDir, name)
+          const contents = fs.readFileSync(latestCommentPath, 'utf8')
+          const data = JSON.parse(contents)
+          if (!tools.includes(data.contextId.tool)) {
+            data.text = data.text.replaceAll('\n', ' br ')
+            data.text = data.text.replaceAll('"', '“')
+            data.text = data.text.replaceAll('\t"', '')
+            data.text = data.text.replaceAll(' 	', '')
+            data.text = data.text.replaceAll('\\', '')
+            const {
+              text,
+              userName,
+              activeBook,
+              activeChapter,
+              activeVerse,
+              username,
+              modifiedTimestamp,
+              contextId,
+            } = data
+            const ref = contextId.reference
+            const output = `${ref.bookId}	${ref.chapter}	${ref.verse}	${contextId.tool}	${contextId.groupId}	${text}	${userName}	${activeBook}	${activeChapter}	${activeVerse}	${username}	${modifiedTimestamp}	\n`
+            comments.push(output)
+            tools.push(contextId.tool)
+          }
+        })
       }
       fs.writeFileSync(commentFile, comments.join(''))
     })
