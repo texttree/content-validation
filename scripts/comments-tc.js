@@ -21,16 +21,12 @@ function searchComments(corPath, commentFile) {
         }))
         .sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
       if (correctСomment.length > 0) {
-        const tools = []
-        const groupsId = []
+        const gatewayLanguageQuotes = []
         correctСomment.forEach(({ name }) => {
           const latestCommentPath = path.join(verseDir, name)
           const contents = fs.readFileSync(latestCommentPath, 'utf8')
           const data = JSON.parse(contents)
-          if (
-            !tools.includes(data.contextId.tool) &&
-            !groupsId.includes(data.contextId.groupId)
-          ) {
+          if (!gatewayLanguageQuotes.includes(data.gatewayLanguageQuote)) {
             data.text = data.text.replaceAll('\n', ' br ')
             data.text = data.text.replaceAll('"', '“')
             data.text = data.text.replaceAll('\t"', '')
@@ -45,12 +41,13 @@ function searchComments(corPath, commentFile) {
               username,
               modifiedTimestamp,
               contextId,
+              gatewayLanguageQuote,
             } = data
             const ref = contextId.reference
             const output = `${ref.bookId}	${ref.chapter}	${ref.verse}	${contextId.tool}	${contextId.groupId}	${text}	${userName}	${activeBook}	${activeChapter}	${activeVerse}	${username}	${modifiedTimestamp}	\n`
             comments.push(output)
-            tools.push(contextId.tool)
-            groupsId.push(contextId.groupId)
+
+            gatewayLanguageQuotes.push(gatewayLanguageQuote)
           }
         })
       }
